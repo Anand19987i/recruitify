@@ -18,7 +18,6 @@ app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 
 const corsOptions = {
-    // origin:'https://recruitifyyy.vercel.app',
     origin: 'https://recruitifyy.onrender.com',
     credentials:true
 }
