@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 const corsOptions = {
     // origin:'https://recruitifyyy.vercel.app',
-    origin: 'http://localhost:5173',
+    origin: 'https://recruitifyy.onrender.com',
     credentials:true
 }
 
