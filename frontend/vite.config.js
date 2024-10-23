@@ -13,8 +13,7 @@ export default defineConfig({
     proxy: {
       "/api/v1": "https://recruitify-bggp.onrender.com",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/v1/, ""), // Corrected regex pattern
-      },
+        rewrite: (path) => path.replace(/^\/api\/v1/, ""), // Corrected regex patter
     },
   },
 });
