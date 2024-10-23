@@ -14,7 +14,7 @@ export default defineConfig({
       "/api/v1": {
         target: "https://recruitify-bggp.onrender.com",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/v1, ""),
+        rewrite: (path) => path.replace(/^\/api\/v1/, ""), // Corrected regex pattern
       },
     },
   },
