@@ -11,7 +11,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/apiv1": {
+      "/api/v1": {
         target: "https://recruitify-bggp.onrender.com",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/v1, ""),
