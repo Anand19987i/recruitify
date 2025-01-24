@@ -14,7 +14,7 @@ export const Home = () => {
   const { user } = useSelector(store => store.auth);
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
-  console.log(user?.id);
+  console.log(user?._id);
   useEffect(() => {
     if (!user?.id) {
       const timer = setTimeout(() => {
