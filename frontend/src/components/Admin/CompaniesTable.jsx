@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '../ui/table'
-import { Avatar, AvatarImage } from '../ui/avatar'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import { Edit2, MoreHorizontal } from 'lucide-react'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
+import { Avatar, AvatarImage } from '../ui/avatar';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { Edit2, MoreHorizontal } from 'lucide-react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const CompaniesTable = () => {
     const { companies, searchCompanyByText } = useSelector(store => store.company);
@@ -23,8 +23,8 @@ const CompaniesTable = () => {
     }, [companies, searchCompanyByText]);
 
     return (
-        <div>
-            <Table>
+        <div className="overflow-x-auto">
+            <Table className="min-w-full">
                 <TableCaption>A list of your recent registered companies</TableCaption>
                 <TableHeader>
                     <TableRow>
@@ -38,7 +38,7 @@ const CompaniesTable = () => {
                     {filterCompany?.map((company) => (
                         <TableRow key={company._id}>
                             <TableCell>
-                                <Avatar>
+                                <Avatar className="w-12 h-12">
                                     <AvatarImage src={company.logo} />
                                 </Avatar>
                             </TableCell>

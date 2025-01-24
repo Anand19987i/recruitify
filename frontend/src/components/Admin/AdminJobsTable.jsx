@@ -29,8 +29,8 @@ const AdminJobsTable = () => {
     };
 
     return (
-        <div>
-            <Table>
+        <div className="overflow-x-auto">
+            <Table className="min-w-full">
                 <TableCaption>A list of your recently posted jobs</TableCaption>
                 <TableHeader>
                     <TableRow>

@@ -65,12 +65,12 @@ export const Login = () => {
   return (
     <div>
       <Navbar />
-      <div className="flex items-center justify-center max-w-7xl mx-auto">
+      <div className="flex items-center justify-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <form
           onSubmit={handleSubmit}
-          className="w-1/2 border border-gray-200 rounded-md p-4 my-10 shadow-xl"
+          className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3 border border-gray-200 rounded-md p-4 sm:p-6 md:p-8 my-10 shadow-xl bg-white"
         >
-          <h1 className="font-bold text-xl mb-5">Login</h1>
+          <h1 className="font-bold text-xl mb-5 text-center">Login</h1>
 
           <div className="my-2">
             <Label className="font-semibold text-gray-700">
@@ -82,6 +82,7 @@ export const Login = () => {
               value={input.email}
               onChange={handleChange}
               placeholder="Enter your active email"
+              className="w-full"
             />
           </div>
 
@@ -95,11 +96,12 @@ export const Login = () => {
               value={input.password}
               onChange={handleChange}
               placeholder="Enter your password"
+              className="w-full"
             />
           </div>
 
           <div className="my-5">
-            <RadioGroup className="flex items-center gap-4 text-gray-800">
+            <RadioGroup className="flex flex-wrap items-center gap-4 text-gray-800">
               <div className="flex items-center space-x-2">
                 <Input
                   type="radio"
@@ -127,7 +129,7 @@ export const Login = () => {
 
           <Button
             type="submit"
-            className="w-full my-4 bg-sky-700 hover:bg-blue-700"
+            className="w-full my-4 bg-sky-700 hover:bg-blue-700 text-white font-semibold py-2 rounded-md"
             disabled={loading}
           >
             {loading ? (
@@ -140,9 +142,9 @@ export const Login = () => {
             )}
           </Button>
 
-          <span className="text-sm">
+          <span className="text-sm block text-center">
             Don't have an account?{' '}
-            <Link to="/signup" className="text-sky-700">
+            <Link to="/signup" className="text-sky-700 underline">
               Signup
             </Link>
           </span>

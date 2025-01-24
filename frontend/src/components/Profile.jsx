@@ -59,7 +59,7 @@ const Profile = () => {
                     }
                 </div>
             </div>
-            <div className="max-w-7xl mx-auto bg-white rounded-xl">
+            <div className="max-w-7xl mx-auto bg-white rounded-xl px-2 py-4">
                 <h1 className="font-bold text-lg my-5">Applied Jobs</h1>
                 <AppliedJobsTable/>
             </div>
