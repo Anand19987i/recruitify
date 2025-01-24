@@ -3,7 +3,7 @@ import { setAllJobs ,setSingleJob } from '@/redux/jobSlice'
 import { COMPANY_API_END_POINT, JOB_API_END_POINT } from '@/utils/constant'
 import axios from 'axios'
 import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const useGetJobById = (jobId) => {
     const dispatch = useDispatch();

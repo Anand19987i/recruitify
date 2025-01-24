@@ -7,21 +7,22 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { COMPANY_API_END_POINT } from '@/utils/constant'
 import { toast } from 'sonner'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setSingleCompany } from '@/redux/companySlice'
+import { setUser } from '@/redux/authSlice'
 
 const CompanyCreate = () => {
     const navigate = useNavigate();
     const [companyName, setCompanyName] = useState();
     const dispatch = useDispatch();
+    const { user } = useSelector(store => store.auth);
     const registerNewCompany = async () => {
         try {
-            const res = await axios.post(`${COMPANY_API_END_POINT}/register`, { companyName }, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Include token
+            const res = await axios.post(`${COMPANY_API_END_POINT}/register/${user.id}`, {companyName}, {
+                headers:{
+                    'Content-Type':'application/json'
                 },
-                withCredentials: true
+                withCredentials:true
             });
             if(res?.data?.success){
                 dispatch(setSingleCompany(res.data.company));
@@ -50,8 +51,8 @@ const CompanyCreate = () => {
                     onChange={(e) => setCompanyName(e.target.value)}
                 />
                 <div className='flex items-center gap-2 my-10'>
-                    <Button variant="outline" onClick={() => navigate("/admin/companies")}>Cancel</Button>
-                    <Button onClick={registerNewCompany}>Continue</Button>
+                    <Button variant="outline"  onClick={() => navigate("/admin/companies")}>Cancel</Button>
+                    <Button onClick={registerNewCompany} className="bg-sky-700 hover:bg-sky-800">Continue</Button>
                 </div>
             </div>
         </div>

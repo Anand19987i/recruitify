@@ -46,7 +46,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
         }
         try {
             setLoading(true);
-            const res = await axios.post(`${USER_API_END_POINT}/profile/update`, formData, {
+            const res = await axios.put(`${USER_API_END_POINT}/profile/update/${user._id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
@@ -59,14 +59,14 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
         } catch (error) {
             console.log(error);
             toast.error(error.response.data.message);
-        } finally{
+        } finally {
             setLoading(false);
         }
         setOpen(false);
         console.log(input);
     }
 
-
+    console.log(user._id);
 
     return (
         <div>
@@ -81,12 +81,14 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                 <Label htmlFor="name" className="text-right">Name</Label>
                                 <Input
                                     id="name"
-                                    name="name"
+                                    name="fullname" // Change from "name" to "fullname"
                                     type="text"
                                     value={input.fullname}
                                     onChange={changeEventHandler}
                                     className="col-span-3"
                                 />
+
+
                             </div>
                             <div className='grid grid-cols-4 items-center gap-4'>
                                 <Label htmlFor="email" className="text-right">Email</Label>
@@ -103,7 +105,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                 <Label htmlFor="number" className="text-right">Number</Label>
                                 <Input
                                     id="number"
-                                    name="number"
+                                    name="phoneNumber" // Change from "number" to "phoneNumber"
                                     value={input.phoneNumber}
                                     onChange={changeEventHandler}
                                     className="col-span-3"

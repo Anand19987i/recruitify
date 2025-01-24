@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from '../shared/Navbar'
-import { Button } from '../ui/button'
-import { ArrowLeft, Loader2 } from 'lucide-react'
-import { Label } from '../ui/label'
-import { Input } from '../ui/input'
-import axios from 'axios'
-import { JOB_API_END_POINT } from '@/utils/constant'
-import { useNavigate, useParams } from 'react-router-dom'
-import { toast } from 'sonner'
-import { useSelector } from 'react-redux'
-import useGetJobById from '@/hooks/useGetJobById'
+import React, { useEffect, useState } from 'react';
+import Navbar from '../shared/Navbar';
+import { Button } from '../ui/button';
+import { ArrowLeft, Loader2 } from 'lucide-react';
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
+import axios from 'axios';
+import { JOB_API_END_POINT } from '@/utils/constant';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'sonner';
+import { useSelector } from 'react-redux';
+import useGetJobById from '@/hooks/useGetJobById';
 import { 
     Select, 
     SelectContent, 
@@ -18,7 +18,6 @@ import {
     SelectTrigger, 
     SelectValue 
 } from '../ui/select';
-
 
 const JobSetup = () => {
     const params = useParams();
@@ -32,10 +31,12 @@ const JobSetup = () => {
         jobType: "",
         experience: "",
         position: 0,
-        companyId: ""
+        companyId: ""  // Keep this for storing the selected companyId
     });
-    const { singleJob } = useSelector(store => store.job);
+    
+    const { singleJob, updateJob } = useSelector(store => store.job);
     const { companies } = useSelector(store => store.company);
+    const { user } = useSelector(store => store.auth);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -60,42 +61,50 @@ const JobSetup = () => {
     };
 
     const selectChangeHandler = (value) => {
-        const selectedCompany = companies.find(company => company.name.toLowerCase() === value);
-        setInput({ ...input, companyId: selectedCompany?._id });
+        const selectedCompany = companies.find(company => company._id === value);
+        setInput({ ...input, companyId: selectedCompany ? selectedCompany._id : "" });
     };
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        formData.append("title", input.title);
-        formData.append("description", input.description);
-        formData.append("requirements", input.requirements);  
-        formData.append("salary", input.salary);
-        formData.append("location", input.location);
-        formData.append("jobType", input.jobType);
-        formData.append("experience", input.experience);
-        formData.append("position", input.position);
-        formData.append("companyId", input.companyId);
+        
+        if (!input.companyId) {
+            toast.error('Please select a company!');
+            return;
+        }
+    
+        const jobData = {
+            title: input.title,
+            description: input.description,
+            requirements: input.requirements, // Ensure it's an array
+            salary: Number(input.salary),
+            location: input.location,
+            jobType: input.jobType,
+            experience: Number(input.experience),
+            position: Number(input.position),
+            companyId: input.companyId, // Ensure this is a valid ObjectId
+        };
     
         try {
             setLoading(true);
-            const res = await axios.put(`${JOB_API_END_POINT}/update/${params.id}`, formData, {
+            const res = await axios.put(`${JOB_API_END_POINT}/update/${params.id}`, jobData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'application/json',
                 },
-                withCredentials: true
+                withCredentials: true,
             });
+    
             if (res.data.success) {
                 toast.success(res.data.message);
                 navigate("/admin/jobs");
             }
         } catch (error) {
-            console.log(error);
+            console.log("Error response:", error.response.data); // Log the error response for debugging
             toast.error(error.response.data.message);
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     return (
         <div>
@@ -186,13 +195,13 @@ const JobSetup = () => {
                             <div>
                                 <Label>Select Company</Label>
                                 <Select onValueChange={selectChangeHandler} value={input.companyId}>
-                                    <SelectTrigger className="w-full">
+                                    <SelectTrigger className="w-full cursor-pointer">
                                         <SelectValue placeholder="Select a Company" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectGroup>
+                                        <SelectGroup className='cursor-pointer'>
                                             {companies.map((company) => (
-                                                <SelectItem key={company._id} value={company.name.toLowerCase()}>
+                                                <SelectItem key={company._id} value={company._id}>
                                                     {company.name}
                                                 </SelectItem>
                                             ))}

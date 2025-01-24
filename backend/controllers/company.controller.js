@@ -5,6 +5,7 @@ import cloudinary from "../utils/cloudinary.js";
 export const registerCompany = async (req, res) => {
     try {
         const { companyName } = req.body;
+        const { userId } = req.params;
         if (!companyName) {
             return res.status(400).json({
                 message: "Company name is required.",
@@ -20,7 +21,7 @@ export const registerCompany = async (req, res) => {
         };
         company = await Company.create({
             name: companyName,
-            userId: req.id
+            userId: userId
         });
 
         return res.status(201).json({
@@ -34,22 +35,26 @@ export const registerCompany = async (req, res) => {
 }
 export const getCompany = async (req, res) => {
     try {
-        const userId = req.id; // logged in user id
+        const userId = req.params.userId; // Ensure this matches the expected parameter
         const companies = await Company.find({ userId });
-        if (!companies) {
+
+        if (!companies || companies.length === 0) {
             return res.status(404).json({
-                message: "Companies not found.",
+                message: "No companies found for the user.",
                 success: false
-            })
+            });
         }
+
         return res.status(200).json({
             companies,
-            success:true
-        })
+            success: true
+        });
     } catch (error) {
         console.log(error);
+        return res.status(500).json({ message: "Internal Server Error", success: false });
     }
-}
+};
+
 // get company by id
 export const getCompanyById = async (req, res) => {
     try {
@@ -72,6 +77,7 @@ export const getCompanyById = async (req, res) => {
 export const updateCompany = async (req, res) => {
     try {
         const { name, description, website, location } = req.body;
+        
  
         const file = req.file;
         // idhar cloudinary ayega

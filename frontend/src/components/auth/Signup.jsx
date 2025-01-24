@@ -54,8 +54,10 @@ export const Signup = () => {
         withCredentials: true,
       })
       if (res.data.success) {
+        dispatch(setLoading(false));
         navigate("/login");
         toast.success(res.data.message);
+
       } else {
         toast.error(res.data.message);
         dispatch(setLoading(false));

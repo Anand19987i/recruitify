@@ -10,6 +10,7 @@ import { toast } from 'sonner'
 import axios from 'axios'
 import { USER_API_END_POINT } from '@/utils/constant'
 
+
 const Navbar = () => {
     const { user } = useSelector(store => store.auth);
     const navigate = useNavigate();
@@ -59,17 +60,17 @@ const Navbar = () => {
                         ) : <Popover>
                             <PopoverTrigger asChild>
                                 <Avatar className='cursor-pointer'>
-                                    <AvatarImage src={user?.profile?.profilePhoto} alt="@shadcn" />
+                                    <AvatarImage src={user?.profilePhoto} alt="@shadcn" />
                                 </Avatar>
                             </PopoverTrigger>
                             <PopoverContent className='w-80'>
                                 <div className="flex gap-4 items-center">
                                     <Avatar className='cursor-pointer'>
-                                        <AvatarImage src={user?.profile?.profilePhoto} alt="@shadcn" />
+                                        <AvatarImage src={user?.profilePhoto} alt="@shadcn" />
                                     </Avatar>
                                     <div>
                                         <h4 className='font-medium'>{user?.fullname}</h4>
-                                        <p className='text-sm text-muted-foreground' >{user?.profile?.bio}</p>
+                                        <p className='text-sm text-muted-foreground' >{user?.bio}</p>
                                     </div>
                                 </div>
                                 <div className='flex flex-col text-gray-600 my-3'>
@@ -86,7 +87,7 @@ const Navbar = () => {
                                                 <>
                                                     <div className="flex w-fit items-center gap-2 cursor-pointer disabled:outline-none'">
                                                         <User2 />
-                                                        <Button variant='link'><Link to="/profile">View Profile</Link></Button>
+                                                        <Button variant='link'><Link to={`/profile/${user.id}`}>View Profile</Link></Button>
                                                     </div>
                                                     <div className="flex w-fit items-center gap-2 cursor-pointer">
                                                         <LogOut />

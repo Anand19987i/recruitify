@@ -25,11 +25,11 @@ const Profile = () => {
                 <div className="flex justify-between">
                     <div className="flex items-center gap-4">
                         <Avatar className='h-15 w-24'>
-                            <AvatarImage src={user?.profile?.profilePhoto} alt='profileImage' className='rounded-md' />
+                            <AvatarImage src={user.profilePhoto} alt='profileImage' className='rounded-md' />
                         </Avatar>
                         <div>
-                            <h1 className='font-bold'>{user?.fullname}</h1>
-                            <p>{user?.profile?.bio}</p>
+                            <h1 className='font-bold'>{user.fullname}</h1>
+                            <p>{user.bio}</p>
                         </div>
                     </div>
                     <Button onClick={() => setOpen(true)} variant='outline' className='text-right'><Pen /></Button>
@@ -37,25 +37,25 @@ const Profile = () => {
                 <div className="my-5">
                     <div className="flex items-center gap-3 my-2">
                         <Mail />
-                        <span>{user?.email}</span>
+                        <span>{user.email}</span>
                     </div>
                     <div className="flex items-center gap-3 my-2">
                         <Contact />
-                        <span>{user?.phoneNumber}</span>
+                        <span>{user.phoneNumber}</span>
                     </div>
                 </div>
                 <div className="my-5">
                     <h1>Skills</h1>
                     <div className="flex items-center gap-1">
                         {
-                            user?.profile?.skills.length !== 0 ? user?.profile?.skills.map((item, index) => <Badge key={index}>{item}</Badge>):<span>NA</span>
+                            user?.skills.length !== 0 ? user?.skills.map((item, index) => <Badge key={index}>{item}</Badge>):<span>NA</span>
                         }
                     </div>
                 </div>
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label className='text-md font-bold'>Resume</Label>
                     {
-                        isResume ? <a target='_blank' href={user?.profile?.resume} className='text-blue-500 w-full hover:underline cursor-pointer'>{user?.profile?.resumeOriginalName}</a> : <span>NA</span>
+                        isResume ? <a target='_blank' href={user?.resume} className='text-blue-500 w-full hover:underline cursor-pointer'>{user?.resumeOriginalName}</a> : <span>NA</span>
                     }
                 </div>
             </div>

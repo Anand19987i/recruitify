@@ -3,7 +3,7 @@ import { Job } from "../models/job.model.js";
 
 export const applyJob = async (req, res) => {
     try {
-        const userId = req.id;
+        const userId = req.body.userId;
         const jobId = req.params.id;
         if (!jobId) {
             return res.status(400).json({
@@ -44,32 +44,47 @@ export const applyJob = async (req, res) => {
     } catch (error) {
         console.log(error);
     }
-};
-export const getAppliedJobs = async (req,res) => {
+};export const getAppliedJobs = async (req, res) => {
     try {
-        const userId = req.id;
-        const application = await Application.find({applicant:userId}).sort({createdAt:-1}).populate({
-            path:'job',
-            options:{sort:{createdAt:-1}},
-            populate:{
-                path:'company',
-                options:{sort:{createdAt:-1}},
-            }
-        });
-        if(!application){
+        const userId = req.query.userId; // Extract userId from query parameters
+        if (!userId) {
+            return res.status(400).json({
+                message: "User ID is required.",
+                success: false
+            });
+        }
+
+        const applications = await Application.find({ applicant: userId })
+            .sort({ createdAt: -1 })
+            .populate({
+                path: 'job',
+                options: { sort: { createdAt: -1 } },
+                populate: {
+                    path: 'company',
+                    options: { sort: { createdAt: -1 } },
+                }
+            });
+
+        if (!applications || applications.length === 0) {
             return res.status(404).json({
-                message:"No Applications",
-                success:false
-            })
-        };
+                message: "No Applications found.",
+                success: false
+            });
+        }
+
         return res.status(200).json({
-            application,
-            success:true
-        })
+            application: applications,
+            success: true
+        });
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: "Server error.",
+            success: false
+        });
     }
-}
+};
+
 // admin dekhega kitna user ne apply kiya hai
 export const getApplicants = async (req,res) => {
     try {

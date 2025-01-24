@@ -1,6 +1,9 @@
+
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authSlice from "./authSlice";
 import jobSlice from "./jobSlice";
+import applicationSlice from "./applicationSlice";
+import companySlice from "./companySlice";
 import {
     persistStore,
     persistReducer,
@@ -10,26 +13,26 @@ import {
     PERSIST,
     PURGE,
     REGISTER,
-} from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
-import companySlice from "./companySlice";
-import applicationSlice from "./applicationSlice";
+} from 'redux-persist';
+import storageSession from 'redux-persist/lib/storage/session'; 
+import storage from 'redux-persist/lib/storage';
+
+const storageType = process.env.NODE_ENV === 'production' ? storage : storageSession; 
 
 const persistConfig = {
     key: 'root',
     version: 1,
-    storage,
-}
+    storage: storageType,
+};
 
 const rootReducer = combineReducers({
-    auth:authSlice,
-    job:jobSlice,
-    company:companySlice,
-    application:applicationSlice
-})
+    auth: authSlice,
+    job: jobSlice,
+    company: companySlice,
+    application: applicationSlice,
+});
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
-
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
     reducer: persistedReducer,
@@ -40,4 +43,7 @@ const store = configureStore({
             },
         }),
 });
+
+export const persistor = persistStore(store);
+
 export default store;

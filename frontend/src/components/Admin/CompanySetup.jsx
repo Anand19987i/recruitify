@@ -22,6 +22,7 @@ const CompanySetup = () => {
         file: null
     });
     const {singleCompany} = useSelector(store=>store.company);
+    const { user } = useSelector(store => store.auth);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -46,7 +47,7 @@ const CompanySetup = () => {
         }
         try {
             setLoading(true);
-            const res = await axios.put(`${COMPANY_API_END_POINT}/update/${params.id}`, formData, {
+            const res = await axios.put(`${COMPANY_API_END_POINT}/update/${singleCompany._id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
@@ -63,7 +64,6 @@ const CompanySetup = () => {
             setLoading(false);
         }
     }
-
     useEffect(() => {
         setInput({
             name: singleCompany.name || "",
@@ -133,7 +133,7 @@ const CompanySetup = () => {
                         </div>
                     </div>
                     {
-                        loading ? <Button className="w-full my-4"> <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait </Button> : <Button type="submit" className="w-full my-4">Update</Button>
+                        loading ? <Button className="w-full my-4 bg-sky-700 hover:bg-sky-800"> <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait </Button> : <Button type="submit" className="w-full my-4 bg-sky-700 hover:bg-sky-800">Update</Button>
                     }
                 </form>
             </div>
