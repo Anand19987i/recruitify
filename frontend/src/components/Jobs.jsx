@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from './shared/Navbar';
-import Filtercard from './FilterCard';
+import FilterCard from './FilterCard';
 import Job from './Job';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
@@ -37,7 +37,7 @@ const Jobs = () => {
         <div className="flex gap-5">
           {/* Left Sidebar for Filters */}
           <div className="w-[20%]">
-            <Filtercard />
+            <FilterCard />
           </div>
 
           {/* Main Content Area */}
