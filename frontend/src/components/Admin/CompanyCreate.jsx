@@ -18,15 +18,9 @@ const CompanyCreate = () => {
     const { user } = useSelector(store => store.auth);
     const registerNewCompany = async () => {
         try {
-<<<<<<< HEAD
             const res = await axios.post(`${COMPANY_API_END_POINT}/register/${user.id}`, {companyName}, {
                 headers:{
                     'Content-Type':'application/json'
-=======
-            const res = await axios.post(`${COMPANY_API_END_POINT}/register`, { companyName }, {
-                headers: {
-                    'Content-Type': 'application/json',
->>>>>>> bf8bb31a862e6643cc03d1db27ac85dd554a0117
                 },
                 withCredentials:true
             });
