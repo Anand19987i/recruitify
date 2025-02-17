@@ -44,7 +44,6 @@ const Navbar = () => {
                         <li><Link to="/" className="hover:text-sky-700">Home</Link></li>
                         <li><Link to="/jobs" className="hover:text-sky-700">Jobs</Link></li>
                         <li><Link to="/browse" className="hover:text-sky-700">Browse</Link></li>
-                        <li><Link to={`/profile/${user.id}`} className="hover:text-sky-700">View Profile</Link></li>
                     </>
                 );
             }
