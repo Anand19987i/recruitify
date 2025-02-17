@@ -17,7 +17,7 @@ const Profile = () => {
 
     const [open, setOpen] = useState(false);
     const { user } = useSelector(store => store.auth);
-
+    console.log(user.id);
     return (
         <div>
             <Navbar />

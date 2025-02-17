@@ -47,6 +47,7 @@ export const Login = () => {
         toast.success(response.data.message);
         navigate('/');
       }
+      console.log(user.id);
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || 'An unexpected error occurred.';

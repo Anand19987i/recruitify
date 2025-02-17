@@ -44,7 +44,8 @@ export const applyJob = async (req, res) => {
     } catch (error) {
         console.log(error);
     }
-};export const getAppliedJobs = async (req, res) => {
+};
+export const getAppliedJobs = async (req, res) => {
     try {
         const userId = req.query.userId; // Extract userId from query parameters
         if (!userId) {
