@@ -50,8 +50,8 @@ const Navbar = () => {
         } else {
             return (
                 <>
-                    <li><Link to="/login" className="hover:text-sky-700">Login</Link></li>
-                    <li><Link to="/signup" className="hover:text-sky-700">Signup</Link></li>
+                    <li className='px-4 py-2 rounded bg-sky-800 text-white hover:bg-sky-900'><Link to="/login">Login</Link></li>
+                    <li className='px-4 py-2 rounded border border-gray-300 text-gray-800 hover:bg-gray-200'><Link to="/signup">Signup</Link></li>
                 </>
             );
         }
