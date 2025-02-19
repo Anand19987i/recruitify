@@ -49,9 +49,6 @@ export const Login = () => {
       }
       console.log(user.id);
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message || 'An unexpected error occurred.';
-      toast.error(errorMessage);
     } finally {
       dispatch(setLoading(false));
     }
