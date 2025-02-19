@@ -93,7 +93,7 @@ const FilterCard = ({ onFilter }) => {
           <h3 className="font-medium text-gray-700">{filterType}</h3>
           <div className="flex flex-wrap gap-2 mt-2">
             {options.map((option) => (
-              <label key={option} className="flex items-center gap-2 text-sm text-gray-600">
+              <label key={option} className="flex items-center gap-2 text-sm text-gray-900">
                 <input
                   type="checkbox"
                   className="w-4 h-4 text-blue-600 accent-blue-500"
