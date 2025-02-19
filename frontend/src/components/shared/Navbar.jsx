@@ -97,7 +97,7 @@ const Navbar = () => {
                                     {user.role === "student" && (
                                         <div className="flex w-fit items-center gap-2 cursor-pointer">
                                             <User2 />
-                                            <Button variant='link'><Link to={`/profile/${user.id}`}>View Profile</Link></Button>
+                                            <Link to={`/profile/${user.id}`} className='text-gray-900 text-sm mx-3 font-semibold'> View Profile</Link>
                                         </div>
                                     )}
                                     <div className="flex w-fit items-center gap-2 cursor-pointer">

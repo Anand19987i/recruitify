@@ -183,30 +183,47 @@ export const updateJob = async (req, res) => {
 
 export const filterCard = async (req, res) => {
     try {
-      const { location, jobType, experienceLevel, skills } = req.query;
-  
-      const filterConditions = {};
-  
-      if (location) {
-        filterConditions.location = { $in: location.split(',') }; // Handle multiple locations
-      }
-      if (jobType) {
-        filterConditions.jobType = { $in: jobType.split(',') }; // Handle multiple job types
-      }
-      if (experienceLevel) {
-        filterConditions.experienceLevel = { $in: experienceLevel.split(',') }; // Handle multiple experience levels
-      }
-      if (skills) {
-        filterConditions.skills = { $in: skills.split(',') }; // Handle multiple skills
-      }
-  
-      const jobs = await Job.find(filterConditions);
-      res.json(jobs);
+        const { location, jobType, experienceLevel, skills } = req.query;
+        const filterConditions = {};
+
+        console.log("Received Filters:", req.query);
+
+        if (location) filterConditions.location = { $in: location.split(",") };
+        if (jobType) filterConditions.jobType = { $in: jobType.split(",") };
+
+        if (experienceLevel) {
+            const experienceRanges = experienceLevel.split(",").map(range => {
+                const [min, max] = range.replace(" years", "").split("-").map(Number);
+                return { min, max: isNaN(max) ? 99 : max }; // If max is missing (e.g., "5+ years"), use a high number
+            });
+
+            filterConditions.$or = experienceRanges.map(({ min, max }) => ({
+                experienceLevel: { $gte: min, $lte: max }
+            }));
+        }
+
+        if (skills) filterConditions.requirements = { $in: skills.split(",") };
+
+        console.log("Applying Filters:", JSON.stringify(filterConditions, null, 2));
+
+        const jobs = await Job.find(filterConditions)
+            .populate('company', 'name location logo')
+            .populate('created_by', 'username email');
+
+        console.log("Filtered Jobs:", jobs);
+
+        if (jobs.length === 0) {
+            return res.status(404).json({ success: false, message: "No jobs found." });
+        }
+
+        res.json({ success: true, jobs });
     } catch (error) {
-      console.error('Error fetching filtered jobs:', error);
-      res.status(500).send('Server Error');
+        console.error("Error fetching filtered jobs:", error);
+        res.status(500).json({ message: "Server Error" });
     }
-  };
+};
+
+
   export const categoryJobs = async (req, res) => {
     const { category } = req.query;  // The category will be the query parameter
     try {

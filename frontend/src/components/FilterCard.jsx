@@ -1,109 +1,126 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Checkbox } from './ui/checkbox';
-import { Label } from './ui/label';
-import { JOB_API_END_POINT } from '@/utils/constant';
-import { useDispatch } from 'react-redux';
-import { setFilteredJobs } from '@/redux/jobSlice';
+import React, { useState } from "react";
+import axios from "axios";
+import { JOB_API_END_POINT } from "@/utils/constant";
+import { useDispatch } from "react-redux";
+import { setFilteredJobs } from "@/redux/jobSlice";
 
 const filterData = [
-  {
-    filterType: 'Location',
+  { 
+    filterType: "Location", 
+    options: ["Delhi NCR", "Bangalore", "Hyderabad", "Mumbai", "Pune", "Chennai", "Kolkata"] 
+  },
+  { 
+    filterType: "Job Type", 
+    options: ["Full-Time", "Part-Time", "Internship", "Remote", "Contract"] 
+  },
+  { 
+    filterType: "Experience Level", 
+    options: ["0-1 years", "1-2 years", "3-5 years", "5+ years"]  
+  },
+  { 
+    filterType: "Skills", 
     options: [
-      'Delhi NCR',
-      'Bangalore',
-      'Hyderabad',
-      'Pune',
-      'Mumbai',
-      'Chennai',
-      'Kolkata',
-      'Jaipur',
-      'Ahmedabad'
-    ]
-  },
-  {
-    filterType: 'Job Type',
-    options: ['Full-Time', 'Part-Time', 'Contract', 'Internship', 'Remote', 'Freelance']
-  },
-  {
-    filterType: 'Experience Level',
-    options: ['Fresher', '1-3 Years', '4-6 Years', '7-10 Years', '10+ Years']
-  },
-  {
-    filterType: 'Skills',
-    options: ['JavaScript', 'Python', 'Java', 'AWS', 'React', 'Node.js', 'Kubernetes', 'SQL', 'Docker']
-  },
+      "React", "React Native", "Node.js", "Python", "Java", "C++", "Ruby", "Swift", "Kotlin", 
+      "Go", "AWS", "Azure", "Docker", "Kubernetes", "Machine Learning", "Data Science", "Flutter"
+    ] 
+  }
 ];
 
-const FilterCard = () => {
+const filterKeyMap = {
+  Location: "location",
+  "Job Type": "jobType",
+  "Experience Level": "experienceLevel",
+  Skills: "skills",
+};
+
+const FilterCard = ({ onFilter }) => {
+  const dispatch = useDispatch();
   const [selectedFilters, setSelectedFilters] = useState({
     location: [],
     jobType: [],
     experienceLevel: [],
-    skills: []
+    skills: [],
   });
 
-  const dispatch = useDispatch();
-
   const handleCheckboxChange = (filterType, value) => {
+    const key = filterKeyMap[filterType];
+
     setSelectedFilters((prevFilters) => {
-      const newFilters = { ...prevFilters };
-      const currentFilter = newFilters[filterType];
-      if (currentFilter.includes(value)) {
-        newFilters[filterType] = currentFilter.filter((item) => item !== value);
-      } else {
-        newFilters[filterType] = [...currentFilter, value];
-      }
-      return newFilters;
+      const currentFilter = prevFilters[key];
+      const updatedFilter = currentFilter.includes(value)
+        ? currentFilter.filter((item) => item !== value) // Remove
+        : [...currentFilter, value]; // Add
+
+      return { ...prevFilters, [key]: updatedFilter };
     });
   };
 
-  const fetchFilteredJobs = async (filters) => {
-    try {
-      const queryParams = new URLSearchParams();
-      Object.keys(filters).forEach((filterType) => {
-        const filterValues = filters[filterType];
-        if (filterValues.length > 0) {
-          queryParams.append(filterType, filterValues.join(','));
-        }
-      });
+  const applyFilters = async () => {
+    const queryParams = new URLSearchParams();
+    Object.keys(selectedFilters).forEach((key) => {
+      if (selectedFilters[key].length > 0) {
+        queryParams.append(key, selectedFilters[key].join(","));
+      }
+    });
 
-      const response = await axios.get(`${JOB_API_END_POINT}/filter-jobs?${queryParams.toString()}`);
-      dispatch(setFilteredJobs(response.data));
+    try {
+      const response = await axios.get(
+        `${JOB_API_END_POINT}/filter-jobs?${queryParams.toString()}`
+      );
+      onFilter(response.data);
+      dispatch(setFilteredJobs(response.data.jobs));
     } catch (error) {
-      console.error('Error fetching filtered jobs:', error);
+      console.error("Error fetching filtered jobs:", error);
     }
   };
 
-  useEffect(() => {
-    if (Object.values(selectedFilters).some((filter) => filter.length > 0)) {
-      fetchFilteredJobs(selectedFilters);
-    }
-  }, [selectedFilters, dispatch]);
+  const clearFilters = () => {
+    setSelectedFilters({
+      location: [],
+      jobType: [],
+      experienceLevel: [],
+      skills: [],
+    });
+    onFilter({ jobs: [] }); // Reset filtered jobs
+  };
 
   return (
-    <div className="w-full bg-white p-3 rounded-md ">
-      <h1 className="font-bold text-lg">Filter Jobs</h1>
-      <hr className="mt-3" />
-      
-      {filterData.map((data, index) => (
-        <div key={index} className="mt-4">
-          <h2 className="font-bold text-lg">{data.filterType}</h2>
-          {data.options.map((item, idx) => {
-            const itemId = `id${index}-${idx}`;
-            return (
-              <div key={idx} className="flex items-center space-x-2 my-2">
-                <Checkbox
-                  id={itemId}
-                  checked={selectedFilters[data.filterType]?.includes(item)}
-                  onChange={() => handleCheckboxChange(data.filterType, item)}
+    <div className="bg-white p-5 shadow-md rounded-lg border border-gray-200">
+      <h2 className="text-lg font-semibold mb-4">Filter Jobs</h2>
+
+      {filterData.map(({ filterType, options }) => (
+        <div key={filterType} className="mb-4">
+          <h3 className="font-medium text-gray-700">{filterType}</h3>
+          <div className="flex flex-wrap gap-2 mt-2">
+            {options.map((option) => (
+              <label key={option} className="flex items-center gap-2 text-sm text-gray-600">
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 text-blue-600 accent-blue-500"
+                  checked={selectedFilters[filterKeyMap[filterType]].includes(option)}
+                  onChange={() => handleCheckboxChange(filterType, option)}
                 />
-                <Label htmlFor={itemId}>{item}</Label>
-              </div>
-            );
-          })}
+                {option}
+              </label>
+            ))}
+          </div>
         </div>
       ))}
+
+      <div className="flex gap-3 mt-4">
+        <button
+          onClick={applyFilters}
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition-all"
+        >
+          Apply Filters
+        </button>
+        <button
+          onClick={clearFilters}
+          className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-all"
+        >
+          Clear Filters
+        </button>
+      </div>
     </div>
   );
 };

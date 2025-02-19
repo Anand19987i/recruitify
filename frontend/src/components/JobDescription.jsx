@@ -58,7 +58,7 @@ const JobDescription = () => {
                 {/* Job Info Section */}
                 <div className='flex items-center mb-6 lg:mb-0'>
                     <img src={singleJob?.company?.logo} alt="Company Logo" className='h-12 w-12 rounded-sm mr-4' />
-                    <h1 className='font-bold text-xl'>{singleJob?.title}</h1>
+                    <h1 className='font-bold text-xl'>{singleJob?.company?.name}</h1>
                 </div>
 
                 {/* Apply Button */}
@@ -86,6 +86,7 @@ const JobDescription = () => {
                 <h1 className='font-bold my-2'>Experience: <span className='pl-2 font-normal text-gray-800'>{singleJob?.experienceLevel} years</span></h1>
                 <h1 className='font-bold my-2'>Salary: <span className='pl-2 font-normal text-gray-800'>{singleJob?.salary}LPA</span></h1>
                 <h1 className='font-bold my-2'>Total Applicants: <span className='pl-2 font-normal text-gray-800'>{singleJob?.applications?.length}</span></h1>
+                <h1 className='font-bold my-2'>Positions: <span className='pl-2 font-normal text-gray-800'>{singleJob?.position}</span></h1>
                 <h1 className='font-bold my-2'>Posted Date: <span className='pl-2 font-normal text-gray-800'>{singleJob?.createdAt ? singleJob.createdAt.split("T")[0] : 'N/A'}</span></h1>
             </div>
         </div>
